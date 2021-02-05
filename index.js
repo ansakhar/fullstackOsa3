@@ -19,6 +19,7 @@ const unknownEndpoint = (request, response) => {
 
 app.use(requestLogger)
 
+/*
 let persons = [
   {
     id: 1,
@@ -38,7 +39,7 @@ let persons = [
   { id: 4,
     name: 'Mary Poppendieck',
     number: '39-23-6423122' }
-]
+]*/
 
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
@@ -46,8 +47,14 @@ app.get('/api/persons', (request, response) => {
   })
 })
 
-app.get('/info', (req, res) => {
+/*app.get('/info', (request, response) => {
   res.send(`<p>Phonebook has info for ${persons.length} persons</p><p>${new Date()}</p>`)
+})*/
+
+app.get('/info', (request, response) => {
+  Person.find({}).then(persons => {
+    response.send(`<p>Phonebook has info for ${persons.length} persons</p><p>${new Date()}</p>`)
+  })
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
@@ -62,37 +69,39 @@ app.get('/api/persons/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-app.delete('/api/persons/:id', (request, response) => {
+/*app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
   persons = persons.filter(person => person.id !== id)
 
   response.status(204).end()
-})
+})*/
 
 const generateId = () => {
   return Math.floor(Math.random()*100000)
 }
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
   const body = request.body
 
-  if (body.name === undefined) {
+  if (!body.name) {
+    console.log('error name missing')
     return response.status(400).json({ 
       error: 'name missing' 
     })
   }
 
-  if (body.number === undefined) {
+  if (!body.number) {
+    console.log('error number missing')
     return response.status(400).json({ 
       error: 'number missing' 
     })
   }
 
-  if (persons.find(person => person.name === body.name)) {
+  /*if (persons.find(person => person.name === body.name)) {
     return response.status(400).json({ 
       error: 'name must be unique' 
     })
-  }
+  }*/
 
   const person = new Person({
     /*id: generateId(),*/
