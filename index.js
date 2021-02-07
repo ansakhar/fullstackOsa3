@@ -65,14 +65,14 @@ app.get('/api/persons/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-const generateId = () => {
+/*const generateId = () => {
   return Math.floor(Math.random()*100000)
-}
+}*/
 
 app.post('/api/persons', (request, response, next) => {
   const body = request.body
 
- /* if (!body.name) {
+  /* if (!body.name) {
     console.log('error name missing')
     return response.status(400).json({ 
       error: 'name missing' 
@@ -85,7 +85,7 @@ app.post('/api/persons', (request, response, next) => {
       error: 'number missing' 
     })
   }*/
-   /*if (persons.find(person => person.name === body.name)) {
+  /*if (persons.find(person => person.name === body.name)) {
     return response.status(400).json({ 
       error: 'name must be unique' 
     })
@@ -98,11 +98,11 @@ app.post('/api/persons', (request, response, next) => {
   })
 
   person.save()
-  .then(savedPerson => savedPerson.toJSON())
-  .then(savedAndFormattedPerson => {
-    response.json(savedAndFormattedPerson)
-  }) 
-  .catch(error => next(error))
+    .then(savedPerson => savedPerson.toJSON())
+    .then(savedAndFormattedPerson => {
+      response.json(savedAndFormattedPerson)
+    }) 
+    .catch(error => next(error))
 })
 
 /*app.delete('/api/persons/:id', (request, response) => {
@@ -122,11 +122,11 @@ app.delete('/api/persons/:id', (request, response, next) => {
 
 app.put('/api/persons/:id', (request, response, next) => {
   const body = request.body
-if (body.number.length < 8) {
-  console.log('error: too short number...')
+  if (body.number.length < 8) {
+    console.log('error: too short number...')
     return response.status(400).json({ 
       error: `phonenumber (${body.number}) is shorter than the minimum allowed length (8).` })
-} 
+  } 
   const person = {
     name: body.name,
     number: body.number,
