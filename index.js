@@ -122,17 +122,22 @@ app.delete('/api/persons/:id', (request, response, next) => {
 
 app.put('/api/persons/:id', (request, response, next) => {
   const body = request.body
-
+if (body.number.length < 8) {
+  console.log('error: too short number...')
+    return response.status(400).json({ 
+      error: `phonenumber (${body.number}) is shorter than the minimum allowed length (8).` })
+} 
   const person = {
     name: body.name,
     number: body.number,
   }
-
+  
   Person.findByIdAndUpdate(request.params.id, person, { new: true })
     .then(updatedPerson => {
       response.json(updatedPerson.toJSON())
     })
     .catch(error => next(error))
+  
 })
 
 const unknownEndpoint = (request, response) => {
