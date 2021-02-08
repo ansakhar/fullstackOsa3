@@ -6,7 +6,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 
 app.use(cors())
-app.use(express.json()) 
+app.use(express.json())
 app.use(express.static('build'))
 
 morgan.token('person', function(req, res){return JSON.stringify(req.body)})
@@ -29,7 +29,7 @@ let persons = [
   },
   {
     id: 3,
-    name: 'Dan Abramov', 
+    name: 'Dan Abramov',
     number: '12-43-234345'
   },
   { id: 4,
@@ -74,23 +74,23 @@ app.post('/api/persons', (request, response, next) => {
 
   /* if (!body.name) {
     console.log('error name missing')
-    return response.status(400).json({ 
-      error: 'name missing' 
+    return response.status(400).json({
+      error: 'name missing'
     })
   }
 
   if (!body.number) {
     console.log('error number missing')
-    return response.status(400).json({ 
-      error: 'number missing' 
+    return response.status(400).json({
+      error: 'number missing'
     })
   }*/
   /*if (persons.find(person => person.name === body.name)) {
-    return response.status(400).json({ 
-      error: 'name must be unique' 
+    return response.status(400).json({
+      error: 'name must be unique'
     })
   }*/
-   
+
   const person = new Person({
     /*id: generateId(),*/
     name: body.name,
@@ -101,7 +101,7 @@ app.post('/api/persons', (request, response, next) => {
     .then(savedPerson => savedPerson.toJSON())
     .then(savedAndFormattedPerson => {
       response.json(savedAndFormattedPerson)
-    }) 
+    })
     .catch(error => next(error))
 })
 
@@ -124,20 +124,20 @@ app.put('/api/persons/:id', (request, response, next) => {
   const body = request.body
   if (body.number.length < 8) {
     console.log('error: too short number...')
-    return response.status(400).json({ 
+    return response.status(400).json({
       error: `phonenumber (${body.number}) is shorter than the minimum allowed length (8).` })
-  } 
+  }
   const person = {
     name: body.name,
     number: body.number,
   }
-  
+
   Person.findByIdAndUpdate(request.params.id, person, { new: true })
     .then(updatedPerson => {
       response.json(updatedPerson.toJSON())
     })
     .catch(error => next(error))
-  
+
 })
 
 const unknownEndpoint = (request, response) => {
